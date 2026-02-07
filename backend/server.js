@@ -5,26 +5,25 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
-// API Endpoint 1: GET /api/users
-app.get('/api/users', (req, res) => {
-  const users = [
-    { id: 1, name: 'Alice', email: 'alice@example.com' },
-    { id: 2, name: 'Bob', email: 'bob@example.com' },
-    { id: 3, name: 'Charlie', email: 'charlie@example.com' }
+// API Endpoint 1: GET /api/data
+app.get('/api/data', (req, res) => {
+  const data = [
+    { id: 1, message: 'Hello from API' },
+    { id: 2, message: 'Minimal Stack' }
   ];
-  res.json(users);
+  res.json({ status: 'success', data });
 });
 
-// API Endpoint 2: POST /api/users
-app.post('/api/users', (req, res) => {
-  const { name, email } = req.body;
-  if (!name || !email) {
-    return res.status(400).json({ error: 'Name and email are required' });
+// API Endpoint 2: POST /api/submit
+app.post('/api/submit', (req, res) => {
+  const { name, message } = req.body;
+  if (!name || !message) {
+    return res.status(400).json({ error: 'Name and message are required' });
   }
-  const newUser = { id: 4, name, email };
-  res.status(201).json(newUser);
+  const received = { name, message, timestamp: new Date().toISOString() };
+  res.status(201).json({ status: 'success', message: 'Data received successfully', received });
 });
 
 app.listen(PORT, () => {
